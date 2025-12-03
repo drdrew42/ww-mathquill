@@ -3,23 +3,22 @@
 		"allowJs": true,
 		"esModuleInterop": true,
 		"module": "esnext",
-		"moduleResolution": "node",
-		"baseUrl": ".",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"sourceMap": true,
 		"strict": true,
 		"target": "es2022",
 		"noErrorTruncation": true,
 		"paths": {
-			"src/*": ["src/*"],
-			"tree/*": ["src/tree/*"],
-			"services/*": ["src/services/*"],
-			"commands/*": ["src/commands/*"],
-			"css/*": ["src/css/*"],
-			"fonts/*": ["src/fonts/*"]
+			"src/*": ["./src/*"],
+			"tree/*": ["./src/tree/*"],
+			"services/*": ["./src/services/*"],
+			"commands/*": ["./src/commands/*"],
+			"css/*": ["./src/css/*"],
+			"fonts/*": ["./src/fonts/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable"]
 	},
-	"include": ["src/**/*"],
-	"exclude": ["dist", "node_modules"]
+	"include": ["./src/**/*"],
+	"exclude": ["./dist", "./node_modules"]
 }

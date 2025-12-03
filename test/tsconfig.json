@@ -3,12 +3,11 @@
 		"allowJs": true,
 		"esModuleInterop": true,
 		"module": "esnext",
-		"moduleResolution": "node",
-		"baseUrl": ".",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"sourceMap": true,
 		"strict": true,
-		"target": "es2020",
+		"target": "es2022",
 		"noErrorTruncation": true,
 		"paths": {
 			"src/*": ["../src/*"],
@@ -19,8 +18,9 @@
 			"fonts/*": ["../src/fonts/*"],
 			"test/*": ["./*"]
 		},
-		"lib": ["esnext", "dom", "dom.iterable"]
+		"lib": ["esnext", "dom", "dom.iterable"],
+		"types": ["mocha"]
 	},
-	"include": ["../src/**/*", "**/*"],
+	"include": ["../src/**/*", "./**/*"],
 	"exclude": ["../dist", "../node_modules"]
 }

@@ -34,9 +34,21 @@ module.exports = (_env, argv) => {
 		module: {
 			rules: [
 				{
+					test: /\.ts$/,
+					include: path.resolve(__dirname, 'test'),
+					loader: 'ts-loader',
+					options: {
+						configFile: path.resolve(__dirname, 'test/tsconfig.json'),
+						instance: 'test-instance',
+						onlyCompileBundledFiles: true
+					}
+				},
+				{
 					// typescript
 					test: /\.ts$/,
-					loader: 'ts-loader'
+					include: path.resolve(__dirname, 'src'),
+					loader: 'ts-loader',
+					options: { configFile: path.resolve(__dirname, 'tsconfig.json') }
 				},
 				{
 					test: /\.css$/,
