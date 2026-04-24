@@ -529,7 +529,7 @@ export class Digit extends VanillaSymbol {
 }
 
 export class Variable extends Symbol {
-	isItalic = false;
+	isItalic = true;
 	isPartOfOperator = false;
 
 	constructor(ch: string, html?: string) {
@@ -1431,8 +1431,6 @@ const BracketMixin = <TBase extends Constructor<MathCommand>>(Base: TBase) =>
 		}
 
 		replaceBracket(brackFrag: HTMLElement, side: Direction) {
-			if (!(this instanceof Bracket) && !(this instanceof MathFunction))
-				throw new Error('can only replace bracket for a Bracket or MathFunction');
 			const symbol = this.getSymbol(side);
 
 			brackFrag.innerHTML = symbol.html;
@@ -1658,6 +1656,36 @@ export class MathFunction extends BracketMixin(MathCommand) {
 			if (ch === '(') return true;
 
 			return false;
+		};
+
+		// Only allow a SubSub to be inserted into the block before the parentheses. If anything else is contained in
+		// the block, then move to the content block so it will be inserted there.
+		this.blocks[0].writeLatexHandler = (cursor: Cursor, block: MathBlock) => {
+			if (
+				block.ends.left === block.ends.right &&
+				block.ends.left instanceof Bracket &&
+				block.ends.left.ctrlSeq === '\\left('
+			) {
+				this.enterContentBlock('left', cursor);
+				const bracketContents = block.ends.left.blocks[0].children().disown();
+				block.ends.left.disown();
+				bracketContents.adopt(block);
+				return block;
+			}
+
+			block.eachChild((node: TNode) => {
+				if (node instanceof SupSub) return true;
+				this.enterContentBlock('left', cursor);
+				return false;
+			});
+
+			return false;
+		};
+
+		this.blocks[0].prepareCommandInsertion = (cursor: Cursor, cmd: TNode) => {
+			if (cmd instanceof SupSub) return true;
+			this.enterContentBlock('left', cursor);
+			return true;
 		};
 
 		return super.html();

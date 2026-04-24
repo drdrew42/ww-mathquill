@@ -404,7 +404,6 @@ export class Controller extends ExportText(
 
 	selectAll() {
 		this.notify('move').cursor.insAtRightEnd(this.root);
-		while (this.cursor.left) this.selectLeft();
 		this.withIncrementalSelection((selectDir) => {
 			while (this.cursor.left) selectDir('left');
 		});

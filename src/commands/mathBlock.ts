@@ -12,6 +12,7 @@ import { VanillaSymbol, MathElement, MathCommand, Letter, Digit, latexMathParser
 export const writeMethodMixin = <TBase extends Constructor<TNode>>(Base: TBase) =>
 	class extends Base {
 		writeHandler?: (cursor: Cursor, ch: string) => boolean;
+		writeLatexHandler?: (cursor: Cursor, block: MathBlock) => MathBlock | boolean;
 
 		chToCmd(ch: string, options?: Options): TNode {
 			const cons = (CharCmds[ch] as Constructor<TNode> | undefined) || LatexCmds[ch];
@@ -178,16 +179,19 @@ export class MathBlock extends BlockFocusBlur(writeMethodMixin(MathElement)) {
 		const all = Parser.all;
 		const eof = Parser.eof;
 
-		const block = latexMathParser.skip(eof).or(all.result(false)).parse<MathCommand | undefined>(latex);
+		const block = latexMathParser.skip(eof).or(all.result(false)).parse<MathBlock | undefined>(latex);
 
 		if (block && !block.isEmpty() && block.prepareInsertionAt(cursor)) {
-			if (cursor.parent) block.children().adopt(cursor.parent, cursor.left, cursor.right);
-			const elements = block.domify();
+			const handlerResult = this.writeLatexHandler?.(cursor, block);
+			if (handlerResult === true) return;
+			const blockToInsert = handlerResult || block;
+			if (cursor.parent) blockToInsert.children().adopt(cursor.parent, cursor.left, cursor.right);
+			const elements = blockToInsert.domify();
 			cursor.element.before(...elements.contents);
-			cursor.left = block.ends.right;
-			block.finalizeInsert(cursor.options, cursor);
-			block.ends.right?.right?.siblingCreated?.(cursor.options, 'left');
-			block.ends.left?.left?.siblingCreated?.(cursor.options, 'right');
+			cursor.left = blockToInsert.ends.right;
+			blockToInsert.finalizeInsert(cursor.options, cursor);
+			blockToInsert.ends.right?.right?.siblingCreated?.(cursor.options, 'left');
+			blockToInsert.ends.left?.left?.siblingCreated?.(cursor.options, 'right');
 			cursor.parent?.bubble('reflow');
 		}
 	}

@@ -391,6 +391,9 @@ export class TNode {
 	replaces(_fragment?: string | Fragment) {
 		/* do nothing */
 	}
+	prepareCommandInsertion(_cursor: Cursor, _cmd: TNode): boolean {
+		return true;
+	}
 	setOptions(_options: { text?: () => string; htmlTemplate?: string; latex?: () => string }) {
 		return this;
 	}
