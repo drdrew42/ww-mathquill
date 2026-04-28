@@ -709,7 +709,7 @@ export class Fraction extends MathCommand {
 
 	text() {
 		let leftward = this.left;
-		for (; leftward && leftward.ctrlSeq === '\\ '; leftward = leftward.left);
+		for (; leftward?.ctrlSeq === '\\ '; leftward = leftward.left);
 
 		const text = (dir: Direction) => {
 			let needParens = false;
@@ -993,7 +993,7 @@ export class SupSub extends MathCommand {
 						if (dir === 'right' && pt) {
 							if (pt.left) cursor.insRightOf(pt.left);
 							else if (pt.parent) cursor.insAtLeftEnd(pt.parent);
-						} else cursor.insRightOf(this[dir] as TNode);
+						} else cursor.insRightOf(this[dir]);
 					} else {
 						if (pt?.right) cursor.insRightOf(pt.right);
 					}
@@ -1645,7 +1645,7 @@ export class MathFunction extends BracketMixin(MathCommand) {
 			) {
 				this.ctrlSeq = `${this.ctrlSeq}${ch}`;
 				this.setAriaLabel();
-				this.elements.children().first.textContent = (this.elements.children().first.textContent ?? '') + ch;
+				this.elements.children().first.textContent = this.elements.children().first.textContent + ch;
 				this.bubble('reflow');
 				return true;
 			}

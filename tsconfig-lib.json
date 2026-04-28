@@ -3,19 +3,20 @@
 		"allowJs": true,
 		"esModuleInterop": true,
 		"module": "esnext",
-		"moduleResolution": "node",
-		"baseUrl": ".",
+		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"strict": true,
 		"target": "esnext",
 		"noErrorTruncation": true,
+		"rootDir": ".",
+		"outDir": "dist",
 		"paths": {
-			"src/*": ["src/*"],
-			"tree/*": ["src/tree/*"],
-			"services/*": ["src/services/*"],
-			"commands/*": ["src/commands/*"],
-			"css/*": ["src/css/*"],
-			"fonts/*": ["src/fonts/*"]
+			"src/*": ["./src/*"],
+			"tree/*": ["./src/tree/*"],
+			"services/*": ["./src/services/*"],
+			"commands/*": ["./src/commands/*"],
+			"css/*": ["./src/css/*"],
+			"fonts/*": ["./src/fonts/*"]
 		},
 		"lib": ["esnext", "dom", "dom.iterable"]
 	},

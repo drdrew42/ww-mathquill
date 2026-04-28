@@ -14,8 +14,7 @@ export const writeMethodMixin = <TBase extends Constructor<TNode>>(Base: TBase) 
 		writeHandler?: (cursor: Cursor, ch: string) => boolean;
 
 		chToCmd(ch: string, options?: Options): TNode {
-			const cons =
-				(CharCmds[ch] as Constructor<TNode> | undefined) || (LatexCmds[ch] as Constructor<TNode> | undefined);
+			const cons = (CharCmds[ch] as Constructor<TNode> | undefined) || LatexCmds[ch];
 			// exclude f because it gets a dedicated command with more spacing
 			if (/^[a-eg-zA-Z]$/.exec(ch)) return new Letter(ch);
 			else if (/^\d$/.test(ch)) return new Digit(ch);
@@ -23,7 +22,7 @@ export const writeMethodMixin = <TBase extends Constructor<TNode>>(Base: TBase) 
 				return new LatexCmds['\u00f7'](ch);
 			else if (options && options.typingAsteriskWritesTimesSymbol && ch === '*')
 				return new LatexCmds['\u00d7'](ch);
-			else if (cons) return new cons(ch);
+			else if (cons as Constructor<TNode> | undefined) return new cons(ch);
 			else return new VanillaSymbol(ch);
 		}
 

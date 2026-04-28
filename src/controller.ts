@@ -342,7 +342,7 @@ export class Controller extends ExportText(
 			// if node we're selecting towards is inside selection (hence retracting)
 			// and is on the *far side* of the selection (hence is only node selected)
 			// and the anticursor is *inside* that node, not just on the other side
-			if (seln && seln.ends[dir] === node && cursor.anticursor?.[otherDir(dir)] !== node) {
+			if (seln?.ends[dir] === node && cursor.anticursor?.[otherDir(dir)] !== node) {
 				node.unselectInto(dir, cursor);
 			} else node.selectTowards(dir, cursor);
 		} else cursor.parent?.selectOutOf(dir, cursor);

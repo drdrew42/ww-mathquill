@@ -33,8 +33,7 @@ suite('focusBlur', function () {
 		});
 
 		const triggerUpOutOf = (mq: MathField) => {
-			mq
-				.el()
+			mq.el()
 				.querySelector('textarea')
 				?.dispatchEvent(
 					new KeyboardEvent('keydown', { key: 'ArrowUp', which: 38, keyCode: 38, bubbles: true })

@@ -119,8 +119,8 @@ export class TextBlock extends BlockFocusBlur(deleteSelectTowardsMixin(TNode)) {
 	selectOutOf(dir: Direction, cursor: Cursor) {
 		this.anticursorPosition =
 			dir === 'left'
-				? (cursor.selection?.elements.first.textContent?.length ?? 1) - 1
-				: this.textContents().length - (cursor.selection?.elements.first.textContent?.length ?? 1) + 1;
+				? (cursor.selection?.elements.first.textContent.length ?? 1) - 1
+				: this.textContents().length - (cursor.selection?.elements.first.textContent.length ?? 1) + 1;
 		cursor.insDirOf(dir, this);
 	}
 

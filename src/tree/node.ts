@@ -149,7 +149,7 @@ export class TNode {
 	}
 
 	foldChildren<T>(fold: T, fn: (fold: T, child: TNode) => T): T {
-		return this.children().fold<T>(fold, fn);
+		return this.children().fold(fold, fn);
 	}
 
 	withDirAdopt(dir: Direction, parent: TNode, withDir?: TNode, oppDir?: TNode) {
@@ -394,8 +394,8 @@ export class TNode {
 	setOptions(_options: { text?: () => string; htmlTemplate?: string; latex?: () => string }) {
 		return this;
 	}
-	chToCmd(_ch: string, _options: Options): TNode {
-		return this as TNode;
+	chToCmd(_ch: string, _options: Options) {
+		return this as unknown as TNode;
 	}
 	mathspeak(_options?: MathspeakOptions) {
 		return '';

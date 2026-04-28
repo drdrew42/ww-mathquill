@@ -369,7 +369,7 @@ LatexCmds.log = class extends MathFunction {
 			return exponent ? `(log10(${param}))${exponent}` : `log10(${param})`;
 		} else if (this.getController()?.options.logsChangeBase) {
 			let leftward = this.left;
-			for (; leftward && leftward.ctrlSeq === '\\ '; leftward = leftward.left);
+			for (; leftward?.ctrlSeq === '\\ '; leftward = leftward.left);
 			return exponent ||
 				(leftward && !(leftward instanceof BinaryOperator)) ||
 				(leftward instanceof BinaryOperator && leftward.isUnary)

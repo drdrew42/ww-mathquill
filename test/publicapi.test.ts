@@ -854,8 +854,7 @@ suite('Public API', function () {
 
 			const mq = MQ.MathField(el, { overrideKeystroke: (_key) => (key = _key) });
 
-			mq
-				.el()
+			mq.el()
 				.querySelector('textarea')
 				?.dispatchEvent(
 					new KeyboardEvent('keydown', { key: 'ArrowLeft', which: 37, keyCode: 37, bubbles: true })
@@ -869,20 +868,17 @@ suite('Public API', function () {
 			let count = 0;
 			const mq = MQ.MathField(el, { overrideCut: () => (count += 1) });
 
-			mq
-				.el()
+			mq.el()
 				.querySelector('textarea')
 				?.dispatchEvent(new ClipboardEvent('cut', { bubbles: true }));
 			assert.equal(count, 1);
 
-			mq
-				.el()
+			mq.el()
 				.querySelector('textarea')
 				?.dispatchEvent(new InputEvent('input', { bubbles: true }));
 			assert.equal(count, 1);
 
-			mq
-				.el()
+			mq.el()
 				.querySelector('textarea')
 				?.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
 			assert.equal(count, 1);

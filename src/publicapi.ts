@@ -75,7 +75,7 @@ const mathQuill: MathQuill = {
 
 		MQ.config = (opts: InputOptions): MQApi => {
 			Options.config(Options.prototype, opts);
-			return MQ as MQApi;
+			return MQ;
 		};
 
 		MQ.registerEmbed = (name: string, options: (data: string) => EmbedOptions) => {
@@ -114,7 +114,7 @@ const mathQuill: MathQuill = {
 		MQ.TextField = createEntrypoint('TextField', TextField);
 		MQ.TextField.prototype = TextField.prototype;
 
-		return MQ as MQApi;
+		return MQ;
 	},
 
 	noConflict() {

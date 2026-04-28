@@ -31,7 +31,7 @@ export default [
 		languageOptions: { parserOptions: { project: false, program: null, projectService: false } },
 		rules: { ...tseslint.configs.disableTypeChecked.rules, '@typescript-eslint/no-require-imports': 'off' }
 	},
-	{ files: ['**/test/*.test.js'], ...mochaPlugin.configs.flat.recommended },
+	{ files: ['**/test/*.test.js'], ...mochaPlugin.configs.recommended },
 	eslintConfigPrettier,
 	{
 		plugins: { '@stylistic': stylistic },
