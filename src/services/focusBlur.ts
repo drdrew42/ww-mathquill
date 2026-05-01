@@ -32,7 +32,7 @@ export const FocusBlurEvents = <TBase extends Constructor<ControllerBase>>(Base:
 
 			this.blurHandler = (e) => {
 				this.blurred = true;
-				this.blurredWithCursor = this.options.blurWithCursor?.(e, this.apiClass) ?? false;
+				this.blurredWithCursor = this.toolbar?.isBeingFocused(e) ?? false;
 				this.container.classList.remove('mq-focused');
 				if (this.blurredWithCursor) {
 					if (this.cursor.selection) this.cursor.selection.elements.addClass('mq-blur');

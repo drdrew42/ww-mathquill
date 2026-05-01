@@ -103,6 +103,16 @@ export const TextAreaController = <
 				this.selectFn = select;
 			}
 			this.container.prepend(this.textareaSpan as HTMLElement);
+			if (this.options.useToolbar && this.textarea) {
+				import(/* webpackChunkName: "toolbar" */ 'src/toolbar')
+					.then(({ MathQuillToolbar }) => {
+						if (this.textarea)
+							this.toolbar = new MathQuillToolbar(this as unknown as Controller, this.textarea);
+					})
+					.catch(() => {
+						/* ignore */
+					});
+			}
 			this.addEditableFocusBlurEvents();
 			this.updateMathspeak();
 		}
@@ -113,6 +123,9 @@ export const TextAreaController = <
 				if (text) this.textarea?.select();
 			};
 			this.textareaSpan?.remove();
+
+			this.toolbar?.unbind();
+			delete this.toolbar;
 
 			this.unbindEditableFocusBlurEvents();
 

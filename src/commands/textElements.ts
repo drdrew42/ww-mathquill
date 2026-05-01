@@ -237,7 +237,7 @@ export class TextBlock extends BlockFocusBlur(deleteSelectTowardsMixin(TNode)) {
 			this.fuseChildren();
 		}
 
-		this.getController()?.handle('textBlockExit');
+		this.getController()?.toolbar?.enableButtons();
 	}
 
 	fuseChildren() {
@@ -260,7 +260,7 @@ export class TextBlock extends BlockFocusBlur(deleteSelectTowardsMixin(TNode)) {
 	focus() {
 		super.focus();
 
-		this.getController()?.handle('textBlockEnter');
+		this.getController()?.toolbar?.disableButtons();
 	}
 }
 

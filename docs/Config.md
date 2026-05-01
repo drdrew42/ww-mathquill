@@ -154,14 +154,60 @@ Despite that, the math field can still be focused when selected by a mouse.
 
 Static math fields default to `tabbable: false`, Editable math fields default to `tabbable: true`.
 
-### blurWithCursor
+### useToolbar
 
-This is a method with the signature `(e: FocusEvent, mq?: AbstractMathQuill) => boolean`. If provided, this method will
-be called anytime an editable math field loses focus (for example if the "Tab" key is pressed or the window loses
-focus). If the method returns true, then the field will be blurred with the cursor left visible. This means that if
-there is a selection in the field, it will not be cleared but will be given an inactive gray styling, and if there is
-not a selection then the cursor will remain in the field but will stop blinking. This gives the appearance of no longer
-being active but gives indicators as to where the cursor is. This is useful for implementing a toolbar.
+If `useToolbar` is true then a toolbar will be shown when an editable field is focused. This is false by default. Note
+that this must be set when the editable field is initialized, and cannot be changed afterward. Note that in order to use
+the toolbar, the Bootstrap must be loaded in the page since the toolbar uses Bootstrap tooltips, popovers, and buttons.
+
+### toolbarButtons
+
+These are the buttons that will be shown in the toolbar. Each button is defined by an `id`, `latex` command, `tooltip`,
+and `icon` all of which are strings. The `id` is an identifier for the button and must be unique. The `latex` command
+is the command that will be injected into the editable field when the button is clicked. The `tooltip` is a brief
+description of the button. It should include the equivalent keyboard characters that can be typed to inject the command
+into the editable field without using the toolbar button. It will be shown when the button has focus or the mouse hovers
+over the button. The `icon` is a latex input sequence that will be shown for the button. It must be valid latex that is
+supported by MathQuill, and will be inserted into the button as a static math field.
+
+The default buttons are as follows.
+
+```js
+[
+    { id: 'frac', latex: '/', tooltip: 'fraction (/)', icon: '\\frac{\\text{ }}{\\text{ }}' },
+    { id: 'abs', latex: '|', tooltip: 'absolute value (|)', icon: '|\\text{ }|' },
+    { id: 'sqrt', latex: '\\sqrt', tooltip: 'square root (sqrt)', icon: '\\sqrt{\\text{ }}' },
+    { id: 'nthroot', latex: '\\root', tooltip: 'nth root (root)', icon: '\\sqrt[\\text{ }]{\\text{ }}' },
+    { id: 'exponent', latex: '^', tooltip: 'exponent (^)', icon: '\\text{ }^\\text{ }' },
+    { id: 'infty', latex: '\\infty', tooltip: 'infinity (inf)', icon: '\\infty' },
+    { id: 'pi', latex: '\\pi', tooltip: 'pi (pi)', icon: '\\pi' },
+    { id: 'vert', latex: '\\vert', tooltip: 'such that (vert)', icon: '|' },
+    { id: 'cup', latex: '\\cup', tooltip: 'union (union)', icon: '\\cup' },
+    { id: 'text', latex: '\\text', tooltip: 'text mode (")', icon: 'Tt' }
+];
+```
+
+Note that buttons can be added and removed with the `addToolbarButtons` and `removeToolbarButtons` methods of the options
+interface. For example,
+
+```js
+mathField.options.addToolbarButtons(
+    {
+        id: 'subscript',
+        latex: '_',
+        tooltip: 'subscript (_)',
+        icon: '\\text{  }_\\text{  }'
+    },
+    5
+);
+```
+
+will add a subscript button in the fifth position of the toolbar (after the exponent button with the default buttons),
+and `mathField.options.removeToolbarButtons('subscript')` will remove it. A button can also be added after an existing
+button by passing the id of the button to insert after instead of a number. For example, with
+`mathField.options.addToolbarButtons({ … }, 'exponent');` will insert the button after the exponent button. Multiple
+buttons can be added or removed at once by passing an array of buttons or ids to the `addToolbarButtons` or
+`removeToolbarButtons` methods, respectively.
 
 ## Handlers
 
@@ -199,14 +245,6 @@ Called whenever Enter is pressed.
 
 This is called when the contents of the field might have been changed. This will be called with any edit, such as
 something being typed, deleted, or written with the API. Note that this may be called when nothing has actually changed.
-
-### textBlockEnter(mathField)
-
-This is called whenever a text block is started.
-
-### textBlockExit(mathField)
-
-This is called whenver a text block is ended.
 
 ## Changing Colors
 

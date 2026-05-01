@@ -164,6 +164,7 @@ export class EditableField extends AbstractMathQuill {
 				if (cursor.selection) newCmd.replaces(cursor.replaceSelection());
 				if (cursor.parent?.prepareCommandInsertion(cursor, newCmd)) {
 					newCmd.createLeftOf(cursor.show());
+					this.__controller.aria.alert(newCmd.mathspeak({ createdLeftOf: cursor }));
 					this.__controller.scrollHoriz();
 				}
 			} else {

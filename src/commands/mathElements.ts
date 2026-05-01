@@ -584,7 +584,9 @@ export class Letter extends Variable {
 					for (i = 1, l = this; i < str.length; ++i, l = l?.left);
 					new Fragment(l, this).remove();
 					cursor.left = l?.left;
-					new LatexCmds[str](str).createLeftOf(cursor);
+					const cmd = new LatexCmds[str](str);
+					cmd.createLeftOf(cursor);
+					setTimeout(() => cursor.controller.aria.alert(cmd.mathspeak({ createdLeftOf: cursor })));
 					return;
 				}
 				str = str.slice(1);

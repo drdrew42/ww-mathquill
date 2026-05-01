@@ -1,5 +1,3 @@
-/* eslint-env node */
-
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -18,6 +16,7 @@ module.exports = (_env, argv) => {
 		output: {
 			path: path.resolve(__dirname, 'dist'),
 			filename: '[name].js',
+			chunkFilename: '[name]-[chunkhash].js',
 			clean: true
 		},
 		resolve: {
@@ -31,6 +30,7 @@ module.exports = (_env, argv) => {
 			},
 			extensions: ['', '.ts', '.js']
 		},
+		externals: { bootstrap: 'bootstrap' },
 		module: {
 			rules: [
 				{
@@ -108,7 +108,6 @@ module.exports = (_env, argv) => {
 	};
 
 	if (process.env.NODE_ENV === 'development') {
-		// eslint-disable-next-line no-console
 		console.log('Using development mode.');
 
 		config.devtool = 'source-map';
@@ -119,15 +118,12 @@ module.exports = (_env, argv) => {
 			port: 9292,
 			static: [
 				path.join(__dirname, 'public'),
-				{
-					directory: path.join(__dirname, 'node_modules/mocha'),
-					publicPath: '/mocha'
-				}
+				{ directory: path.join(__dirname, 'node_modules/mocha'), publicPath: '/mocha' },
+				{ directory: path.join(__dirname, 'node_modules/bootstrap/dist'), publicPath: '/bootstrap' }
 			],
 			watchFiles: ['public/**/*']
 		};
 	} else {
-		// eslint-disable-next-line no-console
 		console.log('Using production mode.');
 	}
 
