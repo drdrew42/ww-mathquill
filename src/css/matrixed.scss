@@ -1,9 +1,7 @@
-@import './mixins/display';
-
 .mq-math-mode {
 	.mq-matrixed {
 		background: white;
-		.inline-block();
+		display: inline-block;
 	}
 
 	.mq-matrixed-container {

@@ -55,20 +55,13 @@ module.exports = (_env, argv) => {
 					use: [MiniCssExtractPlugin.loader, 'css-loader']
 				},
 				{
-					test: /\.less$/i,
+					test: /\.s[ac]ss$/i,
 					use: [
 						MiniCssExtractPlugin.loader,
 						'css-loader',
 						{
-							loader: 'less-loader',
-							options: {
-								lessOptions: {
-									modifyVars: {
-										'omit-font-face':
-											typeof process.env.OMIT_FONT_FACE === 'undefined' ? false : true
-									}
-								}
-							}
+							loader: 'sass-loader',
+							options: { additionalData: `$omit-font-face: ${process.env.OMIT_FONT_FACE !== undefined};` }
 						}
 					]
 				},
