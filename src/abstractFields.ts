@@ -162,8 +162,10 @@ export class EditableField extends AbstractMathQuill {
 			if (klass) {
 				const newCmd = new klass(cmd);
 				if (cursor.selection) newCmd.replaces(cursor.replaceSelection());
-				newCmd.createLeftOf(cursor.show());
-				this.__controller.scrollHoriz();
+				if (cursor.parent?.prepareCommandInsertion(cursor, newCmd)) {
+					newCmd.createLeftOf(cursor.show());
+					this.__controller.scrollHoriz();
+				}
 			} else {
 				// TODO: API needs better error reporting
 			}
