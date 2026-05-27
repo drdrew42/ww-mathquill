@@ -5,7 +5,6 @@ import { EditableField } from 'src/abstractFields';
 import { StaticMath } from 'commands/math';
 
 export class MathQuillToolbar {
-	private enabled: boolean;
 	private element?: HTMLDivElement;
 	private tooltips: Tooltip[] = [];
 	private contextMenuElement?: HTMLDivElement;
@@ -14,10 +13,17 @@ export class MathQuillToolbar {
 		private controller: Controller,
 		private textarea: HTMLTextAreaElement
 	) {
-		this.enabled = (localStorage.getItem('MQEditorToolbarEnabled') ?? 'true') === 'true';
 		textarea.addEventListener('focusin', this.insert);
 		textarea.addEventListener('focusout', this.removeUnlessFocused);
 		this.controller.container.addEventListener('contextmenu', this.contextMenu);
+	}
+
+	get enabled() {
+		return (localStorage.getItem('MQEditorToolbarEnabled') ?? 'true') === 'true';
+	}
+
+	set enabled(enable: boolean) {
+		localStorage.setItem('MQEditorToolbarEnabled', enable ? 'true' : 'false');
 	}
 
 	unbind() {
@@ -307,7 +313,6 @@ export class MathQuillToolbar {
 			(e) => {
 				e.preventDefault();
 				this.enabled = !this.enabled;
-				localStorage.setItem('MQEditorToolbarEnabled', this.enabled ? 'true' : 'false');
 				if (!this.enabled && this.element) this.remove();
 				// Bootstrap tries to focus the triggering element after hiding the menu. However, the menu gets
 				// disposed of and the hidden link which is the triggering element removed too quickly in the
