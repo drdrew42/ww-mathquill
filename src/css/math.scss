@@ -1,11 +1,11 @@
+@use 'fonts';
+
 .mq-root-block,
 .mq-math-mode .mq-root-block {
-	.inline-block();
-
+	display: inline-block;
 	width: 100%;
 	padding: 2px;
-	.box-sizing(border-box);
-
+	box-sizing: border-box;
 	white-space: nowrap;
 	overflow: hidden;
 	vertical-align: middle;
@@ -17,19 +17,18 @@
 	font-style: normal;
 	font-size: 115%;
 	line-height: 1;
-
-	.inline-block();
+	display: inline-block;
 
 	.mq-non-leaf,
 	.mq-scaled {
-		.inline-block();
+		display: inline-block;
 	}
 
 	// TODO: dasherize non-symbola
 	var,
 	.mq-text-mode,
 	.mq-non-symbola {
-		font-family: @times;
+		font-family: fonts.$times;
 		line-height: 0.9;
 	}
 
@@ -51,8 +50,7 @@
 		margin: 0;
 		padding: 0;
 		border-color: black;
-		.user-select(none);
-
+		user-select: none;
 		box-sizing: border-box;
 	}
 
@@ -82,7 +80,7 @@
 	}
 
 	.mq-font {
-		font: 1em @times;
+		font: 1em fonts.$times;
 
 		* {
 			font-family: inherit;
@@ -118,8 +116,7 @@
 	.mq-int {
 		> big {
 			display: inline-block;
-			.transform(scaleX(0.7));
-
+			transform: scaleX(0.7);
 			vertical-align: -0.16em;
 		}
 
@@ -162,11 +159,11 @@
 
 	////
 	// operators
-	@operator-padding: 0.2em;
+	$operator-padding: 0.2em;
 
 	.mq-binary-operator {
-		padding: 0 @operator-padding;
-		.inline-block();
+		padding: 0 $operator-padding;
+		display: inline-block;
 	}
 
 	// ^, _
@@ -383,7 +380,7 @@
 	&,
 	.mq-editable-field {
 		cursor: text;
-		font-family: @symbola;
+		font-family: fonts.$symbola;
 	}
 
 	.mq-overarc {
@@ -439,7 +436,7 @@
 				font-size: 0.5em;
 				line-height: 0em;
 				content: '\27A4';
-				visibility: visible; //must override .mq-editable-field.mq-empty:after
+				visibility: visible; // must override .mq-editable-field.mq-empty:after
 				text-align: right;
 			}
 		}

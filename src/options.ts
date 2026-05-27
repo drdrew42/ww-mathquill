@@ -9,13 +9,18 @@ export type DirectionHandler = (dir: Direction, mq?: AbstractMathQuill) => void;
 export interface Handlers {
 	enter?: Handler;
 	edit?: Handler;
-	textBlockEnter?: Handler;
-	textBlockExit?: Handler;
 	moveOutOf?: DirectionHandler;
 	deleteOutOf?: DirectionHandler;
 	selectOutOf?: DirectionHandler;
 	upOutOf?: Handler;
 	downOutOf?: Handler;
+}
+
+export interface ToolbarButton {
+	id: string;
+	latex: string;
+	tooltip: string;
+	icon: string;
 }
 
 export interface InputOptions {
@@ -43,8 +48,9 @@ export interface InputOptions {
 	overrideTypedText?: (text: string) => void;
 	overrideKeystroke?: (key: string, event: KeyboardEvent) => void;
 	ignoreNextMousedown?: (e?: MouseEvent) => boolean;
-	blurWithCursor?: (e: FocusEvent, mq?: AbstractMathQuill) => boolean;
 	tabbable?: boolean;
+	useToolbar?: boolean;
+	toolbarButtons?: ToolbarButton[];
 }
 
 interface NamesWLength {
@@ -352,8 +358,6 @@ export class Options {
 
 	ignoreNextMousedown: (e?: MouseEvent) => boolean = () => false;
 
-	blurWithCursor?: (e: FocusEvent, mq?: AbstractMathQuill) => boolean;
-
 	static #tabbable: boolean | undefined;
 	#_tabbable?: boolean;
 	get tabbable(): boolean | undefined {
@@ -362,5 +366,62 @@ export class Options {
 	set tabbable(tabbable) {
 		if (this instanceof Options) this.#_tabbable = tabbable;
 		else Options.#tabbable = tabbable;
+	}
+
+	static #useToolbar = false;
+	#_useToolbar?: boolean;
+	get useToolbar() {
+		return this.#_useToolbar ?? Options.#useToolbar;
+	}
+	set useToolbar(useToolbar) {
+		if (this instanceof Options) this.#_useToolbar = useToolbar;
+		else Options.#useToolbar = useToolbar;
+	}
+
+	// The set of toolbar buttons that will be available in the toolbar.
+	static #toolbarButtons: ToolbarButton[] = [
+		{ id: 'frac', latex: '/', tooltip: 'fraction (/)', icon: '\\frac{\\text{ }}{\\text{ }}' },
+		{ id: 'abs', latex: '|', tooltip: 'absolute value (|)', icon: '|\\text{ }|' },
+		{ id: 'sqrt', latex: '\\sqrt', tooltip: 'square root (sqrt)', icon: '\\sqrt{\\text{ }}' },
+		{ id: 'nthroot', latex: '\\root', tooltip: 'nth root (root)', icon: '\\sqrt[\\text{ }]{\\text{ }}' },
+		{ id: 'exponent', latex: '^', tooltip: 'exponent (^)', icon: '\\text{ }^\\text{ }' },
+		{ id: 'infty', latex: '\\infty', tooltip: 'infinity (inf)', icon: '\\infty' },
+		{ id: 'pi', latex: '\\pi', tooltip: 'pi (pi)', icon: '\\pi' },
+		{ id: 'vert', latex: '\\vert', tooltip: 'such that (vert)', icon: '|' },
+		{ id: 'cup', latex: '\\cup', tooltip: 'union (union)', icon: '\\cup' },
+		{ id: 'text', latex: '\\text', tooltip: 'text mode (")', icon: 'Tt' }
+	];
+	#_toolbarButtons?: ToolbarButton[];
+	get toolbarButtons(): ToolbarButton[] {
+		return this.#_toolbarButtons ?? Options.#toolbarButtons;
+	}
+	set toolbarButtons(buttons: ToolbarButton[]) {
+		if (Array.isArray(buttons)) {
+			if (this instanceof Options) {
+				this.#_toolbarButtons = structuredClone(buttons);
+			} else Options.#toolbarButtons = structuredClone(buttons);
+			return;
+		}
+	}
+
+	addToolbarButtons(buttons: ToolbarButton | ToolbarButton[], position: string | number = -1) {
+		if (!this.#_toolbarButtons) this.toolbarButtons = Options.#toolbarButtons;
+		if (!this.#_toolbarButtons) throw new Error('toolbarButtons setter not working');
+		const newButtons = Array.isArray(buttons) ? buttons : [buttons];
+		if (typeof position === 'string') {
+			const previousButton = this.#_toolbarButtons.findIndex((b) => b.id === position);
+			if (previousButton !== -1) this.#_toolbarButtons.splice(previousButton + 1, 0, ...newButtons);
+		} else {
+			this.#_toolbarButtons.splice(position, 0, ...newButtons);
+		}
+	}
+
+	removeToolbarButtons(buttonIds: string | string[]) {
+		if (!this.#_toolbarButtons) this.toolbarButtons = Options.#toolbarButtons;
+		if (!this.#_toolbarButtons) throw new Error('toolbarButtons setter not working');
+		for (const buttonId of buttonIds instanceof Array ? buttonIds : [buttonIds]) {
+			const existingButtonIndex = this.#_toolbarButtons.findIndex((b) => b.id === buttonId);
+			if (existingButtonIndex !== -1) this.#_toolbarButtons.splice(existingButtonIndex, 1);
+		}
 	}
 }

@@ -106,7 +106,7 @@ suite('focusBlur', function () {
 				}, 100);
 			} else if (document.visibilityState === 'visible') {
 				setTimeout(() => {
-					assert.equal(textarea?.value, 'f');
+					assert.equal(textarea?.value, '');
 
 					mq.focus();
 					assertHasFocus(mq, 'mq');

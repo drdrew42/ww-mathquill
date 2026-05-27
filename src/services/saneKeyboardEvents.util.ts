@@ -42,6 +42,7 @@ export const saneKeyboardEvents = (() => {
 		const select = (text: string) => {
 			textarea.value = text;
 			if (text && textarea instanceof HTMLTextAreaElement) textarea.select();
+			setTimeout(() => (textarea.value = ''));
 		};
 
 		const handleKey = (key: string, e: KeyboardEvent) => {

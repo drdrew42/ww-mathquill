@@ -13,6 +13,7 @@ import { MouseEventController } from 'services/mouse';
 import { FocusBlurEvents } from 'services/focusBlur';
 import { ExportText } from 'services/exportText';
 import { TextAreaController } from 'services/textarea';
+import type { MathQuillToolbar } from 'src/toolbar';
 import { Aria } from 'services/aria';
 
 export class ControllerBase {
@@ -27,6 +28,7 @@ export class ControllerBase {
 	blurred?: boolean;
 	textareaSpan?: HTMLSpanElement;
 	textarea?: HTMLTextAreaElement;
+	toolbar?: MathQuillToolbar;
 	mathspeakSpan?: HTMLElement;
 	mathspeakId?: string | undefined;
 	aria: Aria;

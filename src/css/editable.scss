@@ -1,5 +1,7 @@
+@use 'fonts';
+
 .mq-editable-field {
-	.inline-block();
+	display: inline-block;
 
 	.mq-cursor {
 		border-left: 1px solid black;
@@ -7,7 +9,7 @@
 		position: relative;
 		z-index: 1;
 		padding: 0;
-		.inline-block();
+		display: inline-block;
 
 		&.mq-blink {
 			visibility: hidden;
@@ -22,8 +24,9 @@
 		border: 1px solid gray;
 
 		&.mq-focused {
-			.box-shadow(~'#8bd 0 0 0 0.2rem, inset #6ae 0 0 2px 0');
-
+			box-shadow:
+				#8bd 0 0 0 0.2rem,
+				inset #6ae 0 0 2px 0;
 			border-color: #709ac0cc;
 			border-radius: 1px;
 		}
@@ -37,7 +40,7 @@
 	// command input with
 	.mq-latex-command-input {
 		color: inherit;
-		font-family: @mono;
+		font-family: fonts.$mono;
 		border: 1px solid gray;
 		padding-right: 1px;
 		margin-right: 1px;
