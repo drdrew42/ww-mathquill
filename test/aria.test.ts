@@ -304,4 +304,20 @@ suite('aria', function () {
 		staticMath.latex('2+2');
 		assert.equal(staticMath.__controller.mathspeakSpan?.textContent, 'Static Label: 2 plus 2');
 	});
+
+	test('mathspeak for ion charge commands', function () {
+		const staticSpan = document.createElement('span');
+		document.getElementById('mock')?.append(staticSpan);
+		// Pin supSubsRequireOperand off to test the ion mathspeak in isolation.
+		const staticMath = MQ.StaticMath(staticSpan, { supSubsRequireOperand: false });
+		const speak = (latex: string) => {
+			staticMath.latex(latex);
+			return staticMath.__controller.mathspeakSpan?.textContent;
+		};
+
+		assert.equal(speak('\\ion[+]{2}'), 'charge 2 positive');
+		assert.equal(speak('\\ion[-]{3}'), 'charge 3 negative');
+		assert.equal(speak('\\positiveion{1}'), 'charge 1 positive');
+		assert.equal(speak('\\negativeion{2}'), 'charge 2 negative');
+	});
 });

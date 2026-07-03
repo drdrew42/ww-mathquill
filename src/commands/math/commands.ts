@@ -248,6 +248,69 @@ LatexCmds.superscript =
 			}
 		};
 
+// `\ion[+]{2}` renders the ion charge "2+"; `\positiveion` / `\negativeion` are sign-bound.
+class Ion extends SupSub {
+	sign: '+' | '-';
+
+	constructor(sign?: string) {
+		super();
+		this.sign = sign === '-' ? '-' : '+';
+		this.supsub = 'sup';
+		this.htmlTemplate =
+			'<span class="mq-supsub mq-non-leaf mq-sup-only">' +
+			'<span class="mq-sup">' +
+			'<span>&0</span>' +
+			`<span class="mq-ion">${this.sign}</span>` +
+			'</span></span>';
+	}
+
+	latex() {
+		return `\\ion[${this.sign}]{${this.sup?.latex() || '1'}}`;
+	}
+
+	text() {
+		return `^(${this.sign}${this.sup?.text() || '1'})`;
+	}
+
+	mathspeak() {
+		const charge = (this.sup ? getCtrlSeqsFromBlock(this.sup) : '') || '1';
+		return `charge ${charge} ${this.sign === '-' ? 'negative' : 'positive'}`;
+	}
+
+	parser() {
+		return latexMathParser.optBlock
+			.then((optBlock: MathBlock) => {
+				return latexMathParser.block.map((block: MathBlock) => {
+					const ion = new Ion(optBlock.text() === '-' ? '-' : '+');
+					ion.blocks = [block];
+					block.adopt(ion);
+					return ion;
+				});
+			})
+			.or(super.parser());
+	}
+
+	finalizeTree() {
+		this.upInto = this.sup = this.ends.right;
+		if (this.sup) this.sup.downOutOf = insLeftOfMeUnlessAtEnd;
+		super.finalizeTree();
+	}
+}
+
+LatexCmds.ion = Ion;
+
+LatexCmds.positiveion = class extends Ion {
+	constructor() {
+		super('+');
+	}
+};
+
+LatexCmds.negativeion = class extends Ion {
+	constructor() {
+		super('-');
+	}
+};
+
 class SummationNotation extends UpperLowerLimitCommand {
 	constructor(ch: string, html: string, ariaLabel?: string) {
 		super(
