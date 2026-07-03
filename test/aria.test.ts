@@ -320,4 +320,21 @@ suite('aria', function () {
 		assert.equal(speak('\\positiveion{1}'), 'charge 1 positive');
 		assert.equal(speak('\\negativeion{2}'), 'charge 2 negative');
 	});
+
+	test('mathspeak for scientific notation command', function () {
+		const staticSpan = document.createElement('span');
+		document.getElementById('mock')?.append(staticSpan);
+		const staticMath = MQ.StaticMath(staticSpan);
+		const speak = (latex: string) => {
+			staticMath.latex(latex);
+			return staticMath.__controller.mathspeakSpan?.textContent;
+		};
+
+		// Scientific notation speaks the full "times ten to the <ordinal> power".
+		assert.equal(speak('\\sci{8}'), 'times ten to the 8th power');
+		assert.equal(speak('\\sci{-3}'), 'times ten to the negative 3rd power');
+		assert.equal(speak('\\sci{23}'), 'times ten to the 23rd power');
+		assert.equal(speak('\\sci{11}'), 'times ten to the 11th power');
+		assert.equal(speak('\\sci{1}'), 'times ten to the 1st power');
+	});
 });

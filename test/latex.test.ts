@@ -81,6 +81,16 @@ suite('latex', function () {
 		assertParsesLatex('\\negativeion{3}', '\\ion[-]{3}');
 	});
 
+	test('scientific notation', function () {
+		// \sci{exp} — fixed ×10 followed by an editable superscript exponent block.
+		assertParsesLatex('\\sci{8}');
+		assertParsesLatex('\\sci{-3}');
+		// Multi-character exponent block.
+		assertParsesLatex('\\sci{23}');
+		// Empty exponent block defaults to 0.
+		assertParsesLatex('\\sci{}', '\\sci{0}');
+	});
+
 	test('inner groups', function () {
 		assertParsesLatex('a{bc}d', 'abcd');
 		assertParsesLatex('{bc}d', 'bcd');
