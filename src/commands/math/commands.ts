@@ -265,11 +265,12 @@ class Ion extends SupSub {
 	}
 
 	latex() {
-		return `\\ion[${this.sign}]{${this.sup?.latex() || '1'}}`;
+		// An empty charge block is a singly-charged ion; render sign-only (Na+).
+		return `\\ion[${this.sign}]{${this.sup?.latex() ?? ''}}`;
 	}
 
 	text() {
-		return `^(${this.sign}${this.sup?.text() || '1'})`;
+		return `^(${this.sign}${this.sup?.text() ?? ''})`;
 	}
 
 	mathspeak() {

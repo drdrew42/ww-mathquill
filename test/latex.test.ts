@@ -73,8 +73,8 @@ suite('latex', function () {
 		assertParsesLatex('\\ion[-]{3}');
 		// Missing optional sign defaults to '+'.
 		assertParsesLatex('\\ion{2}', '\\ion[+]{2}');
-		// Empty charge block defaults to 1 (e.g. Na+).
-		assertParsesLatex('\\ion[+]{}', '\\ion[+]{1}');
+		// Empty charge block is a singly-charged ion; it round-trips sign-only (Na+).
+		assertParsesLatex('\\ion[+]{}');
 		// \positiveion / \negativeion are sign-bound shorthands; both
 		// canonicalize to \ion[sign]{...}.
 		assertParsesLatex('\\positiveion{2}', '\\ion[+]{2}');
